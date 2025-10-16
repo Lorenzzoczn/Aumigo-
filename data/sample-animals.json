@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Max",
+    "age": 2,
+    "species": "cachorro",
+    "size": "medio",
+    "color": "marrom",
+    "isCastrated": true,
+    "description": "Max é um cachorro muito carinhoso e brincalhão. Adora crianças e outros animais. É muito obediente e já está treinado para fazer as necessidades no lugar certo.",
+    "behavior": "Brincalhão, carinhoso, gosta de crianças. Late pouco e é muito obediente.",
+    "location": {
+      "city": "São Paulo",
+      "state": "SP"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1552053831-71594a27632d?w=400",
+        "alt": "Max - cachorro marrom",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Luna",
+    "age": 1,
+    "species": "gato",
+    "size": "pequeno",
+    "color": "branco e preto",
+    "isCastrated": false,
+    "description": "Luna é uma gatinha muito dócil e tranquila. Adora carinho e brincar com bolinhas. É ideal para apartamentos pequenos.",
+    "behavior": "Calma, carinhosa, gosta de brincar com bolinhas. Mia pouco e é muito limpa.",
+    "location": {
+      "city": "Rio de Janeiro",
+      "state": "RJ"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=400",
+        "alt": "Luna - gata branca e preta",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Thor",
+    "age": 4,
+    "species": "cachorro",
+    "size": "grande",
+    "color": "preto",
+    "isCastrated": true,
+    "description": "Thor é um cachorro grande e imponente, mas muito gentil. Ideal para famílias com quintal grande. É muito protetor e leal.",
+    "behavior": "Calmo, protetor, gosta de espaços grandes. Late quando necessário e é muito obediente.",
+    "location": {
+      "city": "Belo Horizonte",
+      "state": "MG"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=400",
+        "alt": "Thor - cachorro preto grande",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Mel",
+    "age": 3,
+    "species": "gato",
+    "size": "medio",
+    "color": "laranja",
+    "isCastrated": true,
+    "description": "Mel é uma gata muito carinhosa e sociável. Adora brincar e fazer companhia. É perfeita para quem quer um animal de estimação amigável.",
+    "behavior": "Sociável, brincalhona, gosta de atenção. Ronrona muito e é muito carinhosa.",
+    "location": {
+      "city": "Brasília",
+      "state": "DF"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?w=400",
+        "alt": "Mel - gata laranja",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Bella",
+    "age": 1,
+    "species": "cachorro",
+    "size": "pequeno",
+    "color": "branco",
+    "isCastrated": false,
+    "description": "Bella é uma cachorrinha pequena e muito energética. Adora brincar e correr. É ideal para famílias ativas.",
+    "behavior": "Energética, brincalhona, adora correr. Late um pouco mas é muito carinhosa.",
+    "location": {
+      "city": "Salvador",
+      "state": "BA"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400",
+        "alt": "Bella - cachorrinha branca",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Simba",
+    "age": 2,
+    "species": "gato",
+    "size": "medio",
+    "color": "laranja e branco",
+    "isCastrated": true,
+    "description": "Simba é um gato muito independente mas carinhoso quando quer. Adora sonecas ao sol e brincar com cordinhas.",
+    "behavior": "Independente, gosta de sonecas, brincalhão com cordinhas. Mia moderadamente.",
+    "location": {
+      "city": "Curitiba",
+      "state": "PR"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
+        "alt": "Simba - gato laranja e branco",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Rex",
+    "age": 5,
+    "species": "cachorro",
+    "size": "grande",
+    "color": "marrom e branco",
+    "isCastrated": true,
+    "description": "Rex é um cachorro experiente e muito calmo. Ideal para pessoas idosas ou famílias que preferem animais tranquilos. É muito obediente.",
+    "behavior": "Muito calmo, obediente, gosta de caminhadas lentas. Late pouco e é muito paciente.",
+    "location": {
+      "city": "Porto Alegre",
+      "state": "RS"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1551717743-49959800b1f6?w=400",
+        "alt": "Rex - cachorro marrom e branco grande",
+        "isMain": true
+      }
+    ]
+  },
+  {
+    "name": "Nina",
+    "age": 1,
+    "species": "gato",
+    "size": "pequeno",
+    "color": "cinza",
+    "isCastrated": false,
+    "description": "Nina é uma gatinha jovem e muito ativa. Adora brincar e explorar. É perfeita para quem tem tempo para brincar.",
+    "behavior": "Muito ativa, curiosa, gosta de explorar. Mia bastante quando quer atenção.",
+    "location": {
+      "city": "Fortaleza",
+      "state": "CE"
+    },
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
+        "alt": "Nina - gatinha cinza",
+        "isMain": true
+      }
+    ]
+  }
+]

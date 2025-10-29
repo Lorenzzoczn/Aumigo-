@@ -26,10 +26,17 @@ const { errorHandler } = require('./middleware/errorHandler.js');
 const { notFound } = require('./middleware/notFound.js');
 
 // Load environment variables
-dotenv.config();
+if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: '.env.production' });
+} else {
+  dotenv.config();
+}
+
+console.log(`🔧 Carregando configuração para: ${process.env.NODE_ENV || 'development'}`);
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// No Render, a porta é fornecida dinamicamente
+const PORT = process.env.PORT || (process.env.NODE_ENV === 'production' ? 10000 : 3002);
 
 // Rate limiting
 const limiter = rateLimit({
@@ -62,8 +69,29 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Static files - serve React build in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist')));
-  console.log('📁 Serving static files from:', path.join(__dirname, '../dist'));
+  // Múltiplos caminhos possíveis para a pasta dist
+  const possibleDistPaths = [
+    path.join(__dirname, '../dist'),
+    path.join(process.cwd(), 'dist'),
+    path.join(__dirname, '../../dist'),
+    path.join(__dirname, 'dist'),
+  ];
+  
+  let distPath = null;
+  
+  for (const testPath of possibleDistPaths) {
+    if (fs.existsSync(testPath)) {
+      distPath = testPath;
+      break;
+    }
+  }
+  
+  if (distPath) {
+    app.use(express.static(distPath));
+    console.log('📁 Serving static files from:', distPath);
+  } else {
+    console.warn('⚠️ Pasta dist não encontrada. Build pode não ter sido executado.');
+  }
 }
 
 // Static files for uploads
@@ -105,16 +133,60 @@ app.get('/api/posts', (req, res) => {
 // Serve React app in production
 if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
-    const indexPath = path.join(__dirname, '../dist/index.html');
-    console.log('📄 Trying to serve index.html from:', indexPath);
+    // Múltiplos caminhos possíveis para o index.html
+    const possiblePaths = [
+      path.join(__dirname, '../dist/index.html'),           // Caminho relativo padrão
+      path.join(process.cwd(), 'dist/index.html'),          // Caminho absoluto do projeto
+      path.join(__dirname, '../../dist/index.html'),        // Caso esteja em subpasta
+      path.join(__dirname, 'dist/index.html'),              // Caso dist esteja na mesma pasta
+    ];
     
-    // Verificar se o arquivo existe
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
+    console.log('🔍 Procurando index.html em:');
+    console.log('📁 __dirname:', __dirname);
+    console.log('📁 process.cwd():', process.cwd());
+    
+    let indexPath = null;
+    
+    // Tentar cada caminho possível
+    for (const testPath of possiblePaths) {
+      console.log('🔍 Testando:', testPath);
+      if (fs.existsSync(testPath)) {
+        indexPath = testPath;
+        console.log('✅ Encontrado em:', indexPath);
+        break;
+      }
+    }
+    
+    if (indexPath) {
+      res.sendFile(path.resolve(indexPath));
     } else {
-      console.error('❌ index.html not found at:', indexPath);
-      console.log('📁 Available files in dist:', fs.readdirSync(path.join(__dirname, '../dist')).join(', '));
-      res.status(404).send('Application not built. Please run npm run build first.');
+      console.error('❌ index.html não encontrado em nenhum dos caminhos');
+      
+      // Listar arquivos disponíveis para debug
+      const debugPaths = [
+        __dirname,
+        path.join(__dirname, '..'),
+        process.cwd()
+      ];
+      
+      debugPaths.forEach(debugPath => {
+        try {
+          if (fs.existsSync(debugPath)) {
+            console.log(`📋 Arquivos em ${debugPath}:`, fs.readdirSync(debugPath).join(', '));
+          }
+        } catch (err) {
+          console.log(`❌ Erro ao listar ${debugPath}:`, err.message);
+        }
+      });
+      
+      res.status(404).send(`
+        <h1>Build não encontrado</h1>
+        <p>Execute: npm run build</p>
+        <p>Servidor procurou em:</p>
+        <ul>
+          ${possiblePaths.map(p => `<li>${p}</li>`).join('')}
+        </ul>
+      `);
     }
   });
 }
@@ -126,11 +198,41 @@ app.use(notFound);
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Aumigo API running on port ${PORT}`);
   console.log(`📱 Environment: ${process.env.NODE_ENV}`);
   console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:5000'}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
+});
+
+// Tratamento de erro para porta ocupada
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Porta ${PORT} já está em uso!`);
+    
+    if (process.env.NODE_ENV !== 'production') {
+      // Em desenvolvimento, tentar uma porta alternativa
+      const alternativePort = PORT + 1;
+      console.log(`🔄 Tentando porta alternativa: ${alternativePort}`);
+      
+      const alternativeServer = app.listen(alternativePort, () => {
+        console.log(`🚀 Aumigo API running on alternative port ${alternativePort}`);
+        console.log(`📊 Health check: http://localhost:${alternativePort}/health`);
+      });
+      
+      alternativeServer.on('error', (altErr) => {
+        console.error('❌ Erro na porta alternativa:', altErr.message);
+        process.exit(1);
+      });
+    } else {
+      // Em produção, falhar imediatamente
+      console.error('❌ Não é possível iniciar o servidor em produção');
+      process.exit(1);
+    }
+  } else {
+    console.error('❌ Erro no servidor:', err.message);
+    process.exit(1);
+  }
 });
 
 module.exports = app;

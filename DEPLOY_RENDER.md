@@ -16,12 +16,26 @@
 npm install && npm run build
 ```
 
+**OU se falhar, use:**
+```bash
+npm install && npx vite build && ls -la dist/
+```
+
 **Start Command:**
 ```bash
 npm start
 ```
 
 **Root Directory:** (deixe vazio)
+
+**Environment Variables:**
+```
+NODE_ENV=production
+JWT_SECRET=seu_jwt_secret_aqui
+MASTER_KEY=sua_master_key_aqui
+```
+
+**⚠️ IMPORTANTE:** O Render define automaticamente a variável `PORT`. Não defina manualmente!
 
 ### 🔧 **CORREÇÃO FINAL APLICADA:**
 
@@ -31,9 +45,17 @@ npm start
 - ✅ Servidor serve de `dist/index.html`
 - ✅ Limpeza da pasta `dist` antiga
 
-### ⚠️ **IMPORTANTE:**
+### ⚠️ **SOLUÇÃO DEFINITIVA APLICADA:**
+- ✅ **Servidor inteligente** - procura dist em múltiplos locais
+- ✅ **Build robusto** - script com verificações
+- ✅ **Porta dinâmica** - usa PORT do Render automaticamente
+- ✅ **Tratamento de erros** - fallback para porta alternativa
+- ✅ **Debug completo** - logs detalhados para identificar problemas
+
+### 🔧 **IMPORTANTE:**
 - Use **configuração manual** no Render
 - **NÃO** use arquivo `render.yaml`
+- **NÃO** defina a variável `PORT` (Render faz isso automaticamente)
 - Certifique-se que `NODE_ENV=production` está definido
 
 3. **Variáveis de Ambiente (Opcionais):**

@@ -48,10 +48,11 @@ MASTER_KEY=sua_master_key_aqui
 
 ### ⚠️ **SOLUÇÃO DEFINITIVA APLICADA:**
 - ✅ **Vite nas dependencies** - Render pode encontrar o módulo
+- ✅ **Configurações CommonJS** - postcss e tailwind convertidos
+- ✅ **Vite.config corrigido** - path resolver atualizado
 - ✅ **Servidor inteligente** - procura dist em múltiplos locais
-- ✅ **Build simplificado** - `npx vite build` direto
 - ✅ **Porta dinâmica** - usa PORT do Render automaticamente
-- ✅ **Configuração .npmrc** - garante instalação completa
+- ✅ **Warning MODULE_TYPELESS resolvido**
 
 ### 🔧 **IMPORTANTE:**
 - Use **configuração manual** no Render

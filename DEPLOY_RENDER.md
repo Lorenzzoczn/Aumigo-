@@ -1,8 +1,6 @@
 # 🚀 Deploy no Render - Aumigo
 
-## ✅ Configuração Automática
-
-O projeto está configurado para deploy automático no Render com a versão React moderna.
+## ✅ Configuração Manual (RECOMENDADA)
 
 ### 📋 Passos para Deploy:
 
@@ -11,16 +9,11 @@ O projeto está configurado para deploy automático no Render com a versão Reac
    - Conecte seu repositório GitHub
    - Selecione o projeto Aumigo
 
-2. **Configuração Automática:**
-   - O arquivo `render.yaml` já está configurado
-   - Build Command: `bash build.sh` (script otimizado)
-   - Start Command: `npm start`
-
-### 🔧 **CORREÇÃO APLICADA - Use esta configuração:**
+2. **⚠️ CONFIGURAÇÃO MANUAL OBRIGATÓRIA:**
 
 **Build Command:**
 ```bash
-npm install && npm run client:build
+npm install && npm run build
 ```
 
 **Start Command:**
@@ -28,10 +21,20 @@ npm install && npm run client:build
 npm start
 ```
 
-### ⚠️ **Problema Resolvido:**
-- ✅ Criado `index.html` na raiz do projeto
-- ✅ Corrigido `vite.config.js` (root e outDir)
-- ✅ Build agora gera arquivos no local correto
+**Root Directory:** (deixe vazio)
+
+### 🔧 **CORREÇÃO FINAL APLICADA:**
+
+- ✅ Removido `render.yaml` (causava conflitos)
+- ✅ Simplificado `vite.config.js`
+- ✅ Build direto: `vite build` → `dist/`
+- ✅ Servidor serve de `dist/index.html`
+- ✅ Limpeza da pasta `dist` antiga
+
+### ⚠️ **IMPORTANTE:**
+- Use **configuração manual** no Render
+- **NÃO** use arquivo `render.yaml`
+- Certifique-se que `NODE_ENV=production` está definido
 
 3. **Variáveis de Ambiente (Opcionais):**
    ```

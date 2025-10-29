@@ -4,8 +4,6 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  root: './',
-  publicDir: './public',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -21,17 +19,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: './dist',
+    outDir: 'dist',
     emptyOutDir: true,
-    sourcemap: false, // Desabilitar sourcemap para produção
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: ['framer-motion', 'lucide-react'],
-        },
-      },
-    },
+    sourcemap: false,
   },
 })

@@ -1,9 +1,62 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { PawPrint } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { PawPrint, AlertCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+    if (error) setError('')
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        // Salvar token e dados do usuário
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify(data.user))
+        
+        // Redirecionar baseado no role
+        if (data.user.role === 'admin') {
+          navigate('/dashboard')
+        } else {
+          navigate('/')
+        }
+      } else {
+        setError(data.message || 'Erro ao fazer login')
+      }
+    } catch (err) {
+      setError('Erro de conexão. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
@@ -24,13 +77,29 @@ const Login = () => {
         </div>
 
         <div className="bg-white p-8 rounded-xl shadow-medium">
-          <form className="space-y-6">
+          {/* Mensagem de erro */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700"
+            >
+              <AlertCircle className="w-5 h-5 mr-2" />
+              {error}
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email
               </label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="seu@email.com"
               />
@@ -42,15 +111,31 @@ const Login = () => {
               </label>
               <input
                 type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="Sua senha"
               />
             </div>
 
-            <Button type="submit" className="w-full" variant="gradient" size="lg">
-              Entrar
+            <Button 
+              type="submit" 
+              className="w-full" 
+              variant="gradient" 
+              size="lg"
+              disabled={loading}
+            >
+              {loading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
+
+          {/* Credenciais de teste */}
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-sm text-blue-700 font-medium mb-1">Credenciais de teste:</p>
+            <p className="text-xs text-blue-600">Admin: admin@aumigo.com / admin123</p>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

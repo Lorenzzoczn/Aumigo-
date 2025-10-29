@@ -1,9 +1,69 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
-import { PawPrint } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { PawPrint, AlertCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
 const Register = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+    // Limpar erros quando usuário começar a digitar
+    if (error) setError('')
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSuccess('Conta criada com sucesso! Redirecionando...')
+        
+        // Salvar token se fornecido
+        if (data.token) {
+          localStorage.setItem('token', data.token)
+          localStorage.setItem('user', JSON.stringify(data.user))
+        }
+        
+        // Redirecionar após 2 segundos
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
+      } else {
+        setError(data.message || 'Erro ao criar conta')
+      }
+    } catch (err) {
+      setError('Erro de conexão. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
@@ -24,13 +84,40 @@ const Register = () => {
         </div>
 
         <div className="bg-white p-8 rounded-xl shadow-medium">
-          <form className="space-y-6">
+          {/* Mensagens de erro e sucesso */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700"
+            >
+              <AlertCircle className="w-5 h-5 mr-2" />
+              {error}
+            </motion.div>
+          )}
+
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700"
+            >
+              <CheckCircle className="w-5 h-5 mr-2" />
+              {success}
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nome Completo
               </label>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="Seu nome completo"
               />
@@ -42,6 +129,10 @@ const Register = () => {
               </label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="seu@email.com"
               />
@@ -53,13 +144,39 @@ const Register = () => {
               </label>
               <input
                 type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength={6}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder="Mínimo 6 caracteres"
               />
             </div>
 
-            <Button type="submit" className="w-full" variant="gradient" size="lg">
-              Criar Conta
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Confirmar Senha
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                placeholder="Digite a senha novamente"
+              />
+            </div>
+
+            <Button 
+              type="submit" 
+              className="w-full" 
+              variant="gradient" 
+              size="lg"
+              disabled={loading}
+            >
+              {loading ? 'Criando conta...' : 'Criar Conta'}
             </Button>
           </form>
 

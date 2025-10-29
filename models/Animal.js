@@ -97,3 +97,4 @@ animalSchema.index({ species: 1, size: 1, isCastrated: 1 });
 animalSchema.index({ 'location.city': 1, 'location.state': 1 });
 
 module.exports = mongoose.model('Animal', animalSchema);
+

@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  password    String?
+  document    String?  @unique
+  userType    String   @default("PERSON") // PERSON, ONG, ADMIN
+  role        String   @default("USER")   // USER, ADMIN, MASTER
+  description String?
+  avatar      String?
+  phone       String?
+  city        String?
+  state       String?
+  googleId    String?  @unique
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  animals Animal[]
+  posts   Post[]
+  likes   Like[]
+  follows Follow[] @relation("UserFollows")
+  followers Follow[] @relation("UserFollowers")
+
+  @@map("users")
+}
+
+model Animal {
+  id          String   @id @default(cuid())
+  name        String
+  age         Int
+  species     String   // DOG, CAT, BIRD, RABBIT, OTHER
+  size        String   // SMALL, MEDIUM, LARGE
+  color       String
+  isCastrated Boolean  @default(false)
+  description String
+  behavior    String?
+  images      String?  // JSON string of image URLs
+  status      String   @default("AVAILABLE") // AVAILABLE, ADOPTED, PAUSED
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  @@map("animals")
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  image       String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+  likes    Like[]
+
+  @@map("posts")
+}
+
+model Like {
+  id     String @id @default(cuid())
+  userId String
+  postId String
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@map("likes")
+}
+
+model Follow {
+  id          String @id @default(cuid())
+  followerId  String
+  followingId String
+
+  // Relations
+  follower  User @relation("UserFollows", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+// Enums are replaced with String fields with comments indicating valid values

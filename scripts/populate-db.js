@@ -119,3 +119,4 @@ async function populateDatabase() {
 }
 
 populateDatabase();
+

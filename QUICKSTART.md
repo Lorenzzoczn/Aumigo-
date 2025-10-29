@@ -132,3 +132,4 @@ Substituir ícone em `public/index.html`:
 ---
 
 **🐾 Aumigo - Conectando corações e patas!**
+

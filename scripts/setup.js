@@ -50,3 +50,4 @@ console.log('2. Inicie o MongoDB (mongod ou MongoDB Atlas)');
 console.log('3. Execute: npm run dev');
 console.log('4. Acesse: http://localhost:3000');
 console.log('\n🐾 Aumigo está pronto para conectar corações e patas!');
+

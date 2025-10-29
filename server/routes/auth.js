@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
 const auth = require('../middleware/auth');
-const passport = require('../config/passport');
+// const passport = require('../../config/passport');
 
 const router = express.Router();
 
@@ -197,28 +197,28 @@ router.get('/me', auth, async (req, res) => {
 // @route   GET /api/auth/google
 // @desc    Iniciar autenticação com Google
 // @access  Public
-router.get('/google', 
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
+// router.get('/google', 
+//   passport.authenticate('google', { scope: ['profile', 'email'] })
+// );
 
 // @route   GET /api/auth/google/callback
 // @desc    Callback do Google OAuth
 // @access  Public
-router.get('/google/callback',
-  passport.authenticate('google', { session: false }),
-  async (req, res) => {
-    try {
-      // Gerar token JWT para o usuário
-      const token = generateToken(req.user._id);
-      
-      // Redirecionar para o frontend com o token
-      res.redirect(`${process.env.CLIENT_URL || 'http://localhost:3000'}?token=${token}&user=${encodeURIComponent(JSON.stringify(req.user.toPublicJSON()))}`);
-    } catch (error) {
-      console.error('Erro no callback do Google:', error);
-      res.redirect(`${process.env.CLIENT_URL || 'http://localhost:3000'}?error=auth_failed`);
-    }
-  }
-);
+// router.get('/google/callback',
+//   passport.authenticate('google', { session: false }),
+//   async (req, res) => {
+//     try {
+//       // Gerar token JWT para o usuário
+//       const token = generateToken(req.user._id);
+//       
+//       // Redirecionar para o frontend com o token
+//       res.redirect(`${process.env.CLIENT_URL || 'http://localhost:3000'}?token=${token}&user=${encodeURIComponent(JSON.stringify(req.user.toPublicJSON()))}`);
+//     } catch (error) {
+//       console.error('Erro no callback do Google:', error);
+//       res.redirect(`${process.env.CLIENT_URL || 'http://localhost:3000'}?error=auth_failed`);
+//     }
+//   }
+// );
 
 // @route   POST /api/auth/master-login
 // @desc    Login especial para administrador master

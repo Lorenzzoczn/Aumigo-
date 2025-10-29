@@ -18,7 +18,7 @@ npm install && npm run build
 
 **OU se falhar, use:**
 ```bash
-npm install && npx vite build && ls -la dist/
+npm install && npx vite build
 ```
 
 **Start Command:**
@@ -41,16 +41,17 @@ MASTER_KEY=sua_master_key_aqui
 
 - ✅ Removido `render.yaml` (causava conflitos)
 - ✅ Simplificado `vite.config.js`
+- ✅ **Vite movido para dependencies** (era devDependencies)
 - ✅ Build direto: `vite build` → `dist/`
 - ✅ Servidor serve de `dist/index.html`
 - ✅ Limpeza da pasta `dist` antiga
 
 ### ⚠️ **SOLUÇÃO DEFINITIVA APLICADA:**
+- ✅ **Vite nas dependencies** - Render pode encontrar o módulo
 - ✅ **Servidor inteligente** - procura dist em múltiplos locais
-- ✅ **Build robusto** - script com verificações
+- ✅ **Build simplificado** - `npx vite build` direto
 - ✅ **Porta dinâmica** - usa PORT do Render automaticamente
-- ✅ **Tratamento de erros** - fallback para porta alternativa
-- ✅ **Debug completo** - logs detalhados para identificar problemas
+- ✅ **Configuração .npmrc** - garante instalação completa
 
 ### 🔧 **IMPORTANTE:**
 - Use **configuração manual** no Render

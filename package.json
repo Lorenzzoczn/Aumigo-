@@ -10,8 +10,8 @@
     "client:build": "npx vite build",
     "client:preview": "npx vite preview",
     "start": "node server/server.js",
-    "build": "node build-production.js",
-    "build:production": "NODE_ENV=production node build-production.js",
+    "build": "npx vite build",
+    "build:production": "NODE_ENV=production npx vite build",
     "setup": "node server/scripts/setup.js",
     "db:generate": "npx prisma generate",
     "db:push": "npx prisma db push",
@@ -67,13 +67,17 @@
     "react-router-dom": "^6.20.1",
     "sharp": "^0.32.6",
     "tailwind-merge": "^2.0.0",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "vite": "^7.1.12",
+    "@vitejs/plugin-react": "^4.1.1",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "@vitejs/plugin-react": "^4.1.1",
-    "autoprefixer": "^10.4.16",
     "concurrently": "^8.2.2",
     "eslint": "^8.53.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -85,11 +89,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
     "nodemon": "^3.1.10",
-    "postcss": "^8.4.32",
     "prettier": "^3.1.0",
-    "prisma": "^5.7.0",
-    "tailwindcss": "^3.3.6",
-    "tailwindcss-animate": "^1.0.7",
-    "vite": "^7.1.12"
+    "prisma": "^5.7.0"
   }
 }

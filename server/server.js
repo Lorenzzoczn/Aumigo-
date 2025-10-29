@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
 // Import routes
 // const authRoutes = require('./routes/auth.js');
@@ -62,6 +63,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files - serve React build in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')));
+  console.log('📁 Serving static files from:', path.join(__dirname, '../dist'));
 }
 
 // Static files for uploads
@@ -103,7 +105,17 @@ app.get('/api/posts', (req, res) => {
 // Serve React app in production
 if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
+    const indexPath = path.join(__dirname, '../dist/index.html');
+    console.log('📄 Trying to serve index.html from:', indexPath);
+    
+    // Verificar se o arquivo existe
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      console.error('❌ index.html not found at:', indexPath);
+      console.log('📁 Available files in dist:', fs.readdirSync(path.join(__dirname, '../dist')).join(', '));
+      res.status(404).send('Application not built. Please run npm run build first.');
+    }
   });
 }
 

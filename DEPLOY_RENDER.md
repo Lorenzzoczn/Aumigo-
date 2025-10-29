@@ -13,8 +13,20 @@ O projeto está configurado para deploy automático no Render com a versão Reac
 
 2. **Configuração Automática:**
    - O arquivo `render.yaml` já está configurado
-   - Build Command: `npm install && npm run build`
+   - Build Command: `bash build.sh` (script otimizado)
    - Start Command: `npm start`
+
+### 🔧 **Se o deploy falhar, configure manualmente:**
+
+**Build Command:**
+```bash
+npm install && npm run client:build && ls -la dist/
+```
+
+**Start Command:**
+```bash
+npm start
+```
 
 3. **Variáveis de Ambiente (Opcionais):**
    ```

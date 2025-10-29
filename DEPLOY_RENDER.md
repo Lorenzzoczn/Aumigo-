@@ -16,17 +16,22 @@ O projeto está configurado para deploy automático no Render com a versão Reac
    - Build Command: `bash build.sh` (script otimizado)
    - Start Command: `npm start`
 
-### 🔧 **Se o deploy falhar, configure manualmente:**
+### 🔧 **CORREÇÃO APLICADA - Use esta configuração:**
 
 **Build Command:**
 ```bash
-npm install && npm run client:build && ls -la dist/
+npm install && npm run client:build
 ```
 
 **Start Command:**
 ```bash
 npm start
 ```
+
+### ⚠️ **Problema Resolvido:**
+- ✅ Criado `index.html` na raiz do projeto
+- ✅ Corrigido `vite.config.js` (root e outDir)
+- ✅ Build agora gera arquivos no local correto
 
 3. **Variáveis de Ambiente (Opcionais):**
    ```

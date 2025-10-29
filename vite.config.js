@@ -4,8 +4,8 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  root: './src',
-  publicDir: '../public',
+  root: './',
+  publicDir: './public',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -21,7 +21,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../dist',
+    outDir: './dist',
     emptyOutDir: true,
     sourcemap: false, // Desabilitar sourcemap para produção
     rollupOptions: {

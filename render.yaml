@@ -3,7 +3,7 @@ services:
     name: aumigo-app
     env: node
     plan: free
-    buildCommand: bash build.sh
+    buildCommand: npm install && npm run client:build
     startCommand: npm start
     envVars:
       - key: NODE_ENV

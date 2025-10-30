@@ -15,39 +15,43 @@ export const apiRequest = async (url, options = {}) => {
     console.log('📡 Resposta recebida:', {
       status: response.status,
       statusText: response.statusText,
-      ok: response.ok,
-      headers: Object.fromEntries(response.headers.entries())
+      ok: response.ok
     });
 
     // Verificar se a resposta é válida
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Erro HTTP:', response.status, errorText);
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      try {
+        const errorText = await response.text();
+        if (errorText) {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorMessage;
+        }
+      } catch (e) {
+        // Ignorar erro de parse do erro
+      }
+      throw new Error(errorMessage);
     }
 
-    // Obter o texto da resposta
-    const text = await response.text();
-    console.log('📄 Texto da resposta:', text);
-
-    // Verificar se há conteúdo
-    if (!text || text.trim() === '') {
-      console.error('❌ Resposta vazia do servidor');
-      throw new Error('Servidor retornou resposta vazia');
-    }
-
-    // Tentar fazer parse do JSON
-    let data;
+    // Tentar fazer parse direto do JSON
     try {
-      data = JSON.parse(text);
+      const data = await response.json();
       console.log('✅ JSON parseado com sucesso:', data);
+      return data;
     } catch (parseError) {
       console.error('❌ Erro ao fazer parse do JSON:', parseError);
-      console.error('📄 Conteúdo que causou erro:', text);
+      
+      // Tentar obter o texto para debug
+      try {
+        const text = await response.text();
+        console.error('📄 Conteúdo da resposta:', text);
+      } catch (textError) {
+        console.error('❌ Não foi possível obter o texto da resposta');
+      }
+      
       throw new Error('Resposta do servidor não é um JSON válido');
     }
 
-    return data;
   } catch (error) {
     console.error('❌ Erro na requisição:', error);
     throw error;

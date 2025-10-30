@@ -52,7 +52,8 @@ MASTER_KEY=sua_master_key_aqui
 - ✅ **Vite.config corrigido** - path resolver atualizado
 - ✅ **Servidor inteligente** - procura dist em múltiplos locais
 - ✅ **Porta dinâmica** - usa PORT do Render automaticamente
-- ✅ **Warning MODULE_TYPELESS resolvido**
+- ✅ **Imports duplicados resolvidos** - apiRequest único
+- ✅ **Build funcionando** - sem erros de transformação
 
 ### 🔧 **IMPORTANTE:**
 - Use **configuração manual** no Render

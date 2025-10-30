@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PawPrint, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { apiRequest } from '@/utils/api'
-import { apiRequest } from '@/config/api'
 
 const Login = () => {
   const [formData, setFormData] = useState({

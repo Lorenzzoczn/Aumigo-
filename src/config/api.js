@@ -29,8 +29,8 @@ export const getApiUrl = (endpoint) => {
   return `${API_CONFIG.baseURL}${endpoint}`
 }
 
-// Função helper para fazer requisições
-export const apiRequest = async (endpoint, options = {}) => {
+// Função helper para fazer requisições (renomeada para evitar conflito)
+export const simpleApiRequest = async (endpoint, options = {}) => {
   const url = getApiUrl(endpoint)
   
   const defaultOptions = {

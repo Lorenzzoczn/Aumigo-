@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import { PawPrint, AlertCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { apiRequest } from '@/config/api'
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -59,7 +60,7 @@ const Register = () => {
         setError(data.message || 'Erro ao criar conta')
       }
     } catch (err) {
-      setError('Erro de conexão. Tente novamente.')
+      setError(err.message || 'Erro de conexão. Tente novamente.')
     } finally {
       setLoading(false)
     }

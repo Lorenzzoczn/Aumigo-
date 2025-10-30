@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
-import { PawPrint, AlertCircle, CheckCircle } from 'lucide-react'
+import { PawPrint, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { apiRequest } from '@/config/api'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -52,7 +53,7 @@ const Login = () => {
         setError(data.message || 'Erro ao fazer login')
       }
     } catch (err) {
-      setError('Erro de conexão. Tente novamente.')
+      setError(err.message || 'Erro de conexão. Tente novamente.')
     } finally {
       setLoading(false)
     }
@@ -131,11 +132,7 @@ const Login = () => {
             </Button>
           </form>
 
-          {/* Credenciais de teste */}
-          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-700 font-medium mb-1">Credenciais de teste:</p>
-            <p className="text-xs text-blue-600">Admin: admin@aumigo.com / admin123</p>
-          </div>
+
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">

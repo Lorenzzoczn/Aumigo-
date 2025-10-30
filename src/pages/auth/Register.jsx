@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import { PawPrint, AlertCircle, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { apiRequest } from '@/utils/api'
 import { apiRequest } from '@/config/api'
 
 const Register = () => {
@@ -33,15 +34,10 @@ const Register = () => {
     setSuccess('')
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const data = await apiRequest('/api/auth/register', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(formData),
-      })
-
-      const data = await response.json()
+      });
 
       if (data.success) {
         setSuccess('Conta criada com sucesso! Redirecionando...')

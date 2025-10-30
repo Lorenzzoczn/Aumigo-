@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import { PawPrint, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { apiRequest } from '@/utils/api'
 import { apiRequest } from '@/config/api'
 
 const Login = () => {
@@ -28,15 +29,10 @@ const Login = () => {
     setError('')
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const data = await apiRequest('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(formData),
-      })
-
-      const data = await response.json()
+      });
 
       if (data.success) {
         // Salvar token e dados do usuário

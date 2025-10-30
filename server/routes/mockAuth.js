@@ -41,6 +41,8 @@ const createUser = (userData) => {
 // @desc    Registro de usuário mockado
 // @access  Public
 router.post('/register', (req, res) => {
+  console.log('📝 Tentativa de registro:', { name: req.body.name, email: req.body.email });
+  
   try {
     const { name, email, password, confirmPassword } = req.body;
     
@@ -92,7 +94,7 @@ router.post('/register', (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
     
-    res.status(201).json({
+    const response = {
       success: true,
       message: 'Conta criada com sucesso!',
       token,
@@ -102,7 +104,10 @@ router.post('/register', (req, res) => {
         email: newUser.email,
         role: newUser.role
       }
-    });
+    };
+    
+    console.log('✅ Registro bem-sucedido:', newUser.email);
+    res.status(201).json(response);
     
   } catch (error) {
     res.status(500).json({
@@ -117,6 +122,8 @@ router.post('/register', (req, res) => {
 // @desc    Login mockado
 // @access  Public
 router.post('/login', (req, res) => {
+  console.log('🔐 Tentativa de login:', req.body.email);
+  
   try {
     const { email, password } = req.body;
     
@@ -148,7 +155,7 @@ router.post('/login', (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
     
-    res.json({
+    const response = {
       success: true,
       message: 'Login realizado com sucesso',
       token,
@@ -158,7 +165,10 @@ router.post('/login', (req, res) => {
         email: user.email,
         role: user.role
       }
-    });
+    };
+    
+    console.log('✅ Login bem-sucedido:', user.email);
+    res.json(response);
     
   } catch (error) {
     res.status(500).json({
